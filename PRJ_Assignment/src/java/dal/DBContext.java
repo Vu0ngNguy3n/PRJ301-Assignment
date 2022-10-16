@@ -41,7 +41,7 @@ public abstract class DBContext<T> {
     
     public abstract T get(int id);
 
-    public abstract ArrayList<T> list(String s);
+    public abstract ArrayList<T> list();
     
     
 

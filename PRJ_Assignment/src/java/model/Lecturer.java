@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
@@ -11,6 +13,8 @@ package model;
 public class Lecturer {
     private String lecturerid;
     private String lecturername;
+    private ArrayList<Group> groups = new ArrayList<>();
+    private ArrayList<Session> sessions = new ArrayList<>();
 
     public Lecturer() {
     }
@@ -19,6 +23,24 @@ public class Lecturer {
         this.lecturerid = lecturerid;
         this.lecturername = lecturername;
     }
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
+    }
+
+    public ArrayList<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(ArrayList<Session> sessions) {
+        this.sessions = sessions;
+    }
+    
+    
 
     public String getLecturerid() {
         return lecturerid;

@@ -5,12 +5,13 @@
 package model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
  * @author admin
  */
-public class TimeTable {
+public class Session {
      private String attend;
     private String sessionid;
     private String sid;
@@ -21,11 +22,13 @@ public class TimeTable {
     private Date date;
     private String subjectid;
     private String lecturerid;
+    ArrayList<Attendence> attendences = new ArrayList<>();
+    
 
-    public TimeTable() {
+    public Session() {
     }
 
-    public TimeTable(String attend, String sessionid, String sid, Boolean status, Date timerecord, int slot, String room, Date date, String subjectid, String lecturerid) {
+    public Session(String attend, String sessionid, String sid, Boolean status, Date timerecord, int slot, String room, Date date, String subjectid, String lecturerid) {
         this.attend = attend;
         this.sessionid = sessionid;
         this.sid = sid;
@@ -37,6 +40,19 @@ public class TimeTable {
         this.subjectid = subjectid;
         this.lecturerid = lecturerid;
     }
+
+    public ArrayList<Attendence> getAttendences() {
+        return attendences;
+    }
+
+    public void setAttendences(ArrayList<Attendence> attendences) {
+        this.attendences = attendences;
+    }
+
+    
+  
+
+   
 
     public String getAttend() {
         return attend;
@@ -117,7 +133,5 @@ public class TimeTable {
     public void setLecturerid(String lecturerid) {
         this.lecturerid = lecturerid;
     }
-    
-    
     
 }
