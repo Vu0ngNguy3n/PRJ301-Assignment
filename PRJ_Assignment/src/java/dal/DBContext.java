@@ -39,6 +39,8 @@ public abstract class DBContext<T> {
     
     public abstract void delete(T model);
     
+    public abstract T getStringId(String id);
+    
     public abstract T get(int id);
 
     public abstract ArrayList<T> list();
