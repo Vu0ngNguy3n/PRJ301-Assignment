@@ -17,6 +17,7 @@ public class Attendence {
     private boolean status;
     private Date timerecord;
 
+
     public Attendence() {
     }
 
@@ -28,6 +29,7 @@ public class Attendence {
         this.timerecord = timerecord;
     }
 
+  
     public String getAttend() {
         return attend;
     }

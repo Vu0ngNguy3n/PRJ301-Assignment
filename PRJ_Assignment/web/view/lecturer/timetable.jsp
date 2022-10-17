@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>FAP Attend</title>
+        <title>FAP TimeTable</title>
 
     </head>
     <body>
@@ -76,7 +76,7 @@
                                 <c:forEach items="${requestScope.sessions}" var="session">
                                     <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
                                         <c:set var="num" value="1"/>
-                                        ${session.group.getGid()}<br/>
+                                        <a href="attend?sessionid=${session.sessionid}&lecturerid=${param.lecturerid}">${session.group.getGid()}</a><br/>
                                         at ${session.room.room} <br/>
                                         <c:if test="${session.status eq true}">
                                             (Attend)
