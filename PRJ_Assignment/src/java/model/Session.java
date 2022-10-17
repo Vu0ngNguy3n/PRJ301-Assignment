@@ -12,54 +12,29 @@ import java.util.ArrayList;
  * @author admin
  */
 public class Session {
-     private String attend;
+
     private String sessionid;
-    private String sid;
     private Boolean status;
-    private Date timerecord;
-    private int slot;
-    private String room;
+    private TimeSlot slot;
+    private Room room;
     private Date date;
-    private String subjectid;
-    private String lecturerid;
+    private Subject subject;
+    private Lecturer lecturer;
+    private Group group;
     ArrayList<Attendence> attendences = new ArrayList<>();
-    
 
     public Session() {
     }
 
-    public Session(String attend, String sessionid, String sid, Boolean status, Date timerecord, int slot, String room, Date date, String subjectid, String lecturerid) {
-        this.attend = attend;
+    public Session(String sessionid, Boolean status, TimeSlot slot, Room room, Date date, Subject subject, Lecturer lecturer, Group group) {
         this.sessionid = sessionid;
-        this.sid = sid;
         this.status = status;
-        this.timerecord = timerecord;
         this.slot = slot;
         this.room = room;
         this.date = date;
-        this.subjectid = subjectid;
-        this.lecturerid = lecturerid;
-    }
-
-    public ArrayList<Attendence> getAttendences() {
-        return attendences;
-    }
-
-    public void setAttendences(ArrayList<Attendence> attendences) {
-        this.attendences = attendences;
-    }
-
-    
-  
-
-   
-
-    public String getAttend() {
-        return attend;
-    }
-
-    public void setAttend(String attend) {
-        this.attend = attend;
+        this.subject = subject;
+        this.lecturer = lecturer;
+        this.group = group;
     }
 
     public String getSessionid() {
@@ -70,14 +45,6 @@ public class Session {
         this.sessionid = sessionid;
     }
 
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSid(String sid) {
-        this.sid = sid;
-    }
-
     public Boolean getStatus() {
         return status;
     }
@@ -86,27 +53,19 @@ public class Session {
         this.status = status;
     }
 
-    public Date getTimerecord() {
-        return timerecord;
-    }
-
-    public void setTimerecord(Date timerecord) {
-        this.timerecord = timerecord;
-    }
-
-    public int getSlot() {
+    public TimeSlot getSlot() {
         return slot;
     }
 
-    public void setSlot(int slot) {
+    public void setSlot(TimeSlot slot) {
         this.slot = slot;
     }
 
-    public String getRoom() {
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(String room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 
@@ -118,20 +77,37 @@ public class Session {
         this.date = date;
     }
 
-    public String getSubjectid() {
-        return subjectid;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setSubjectid(String subjectid) {
-        this.subjectid = subjectid;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
-    public String getLecturerid() {
-        return lecturerid;
+    public Lecturer getLecturer() {
+        return lecturer;
     }
 
-    public void setLecturerid(String lecturerid) {
-        this.lecturerid = lecturerid;
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
     }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public ArrayList<Attendence> getAttendences() {
+        return attendences;
+    }
+
+    public void setAttendences(ArrayList<Attendence> attendences) {
+        this.attendences = attendences;
+    }
+
     
 }

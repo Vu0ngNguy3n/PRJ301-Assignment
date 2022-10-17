@@ -5,6 +5,7 @@
 package controller;
 
 import dal.LecturerDBContext;
+import dal.SessionDBContext;
 import dal.TimeslotDBContext;
 import helper.DateTimeHelper;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import model.Lecturer;
+import model.Session;
 import model.TimeSlot;
 
 
@@ -33,7 +35,7 @@ public class TimetableController extends HttpServlet {
         String to_e = request.getParameter("to");
         java.sql.Date from =null;
         java.sql.Date to = null;
-        if(from_e == null || from_e.length()== 0 || to_e == null || to_e.length()==0){
+        if(from_e == null || from_e.length()== 0 || to_e == null || to_e.length()==0 || DateTimeHelper.compare(java.sql.Date.valueOf(from_e),java.sql.Date.valueOf(to_e))==1){
             Date today = new Date();
             int todayOfWeek = DateTimeHelper.getDayofWeek(today);
             if(todayOfWeek == 1){
@@ -59,6 +61,11 @@ public class TimetableController extends HttpServlet {
         TimeslotDBContext timeDB = new TimeslotDBContext();
         ArrayList<TimeSlot> timeslot = timeDB.list();
         request.setAttribute("slots", timeslot);
+        
+        SessionDBContext db = new SessionDBContext();
+        ArrayList<Session> sessions = db.listSession(lecturerid, from, to);
+        
+        request.setAttribute("sessions", sessions);
         
         
         request.getRequestDispatcher("../view/lecturer/timetable.jsp").forward(request, response);
