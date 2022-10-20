@@ -15,20 +15,30 @@ public class Attendence {
     private String attend;
     private Session session;
     private Student student;
-    private boolean status;
+    private Boolean status;
     private java.sql.Timestamp timerecord;
 
 
     public Attendence() {
     }
 
-    public Attendence(String attend, Session session, Student student, boolean status, Timestamp timerecord) {
+    public Attendence(String attend, Session session, Student student, Boolean status, Timestamp timerecord) {
         this.attend = attend;
         this.session = session;
         this.student = student;
         this.status = status;
         this.timerecord = timerecord;
     }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+  
 
     public String getAttend() {
         return attend;
@@ -54,13 +64,7 @@ public class Attendence {
         this.student = student;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
+    
 
     public Timestamp getTimerecord() {
         return timerecord;

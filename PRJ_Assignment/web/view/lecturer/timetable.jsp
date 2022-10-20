@@ -81,7 +81,7 @@
                                         <c:if test="${session.status eq true}">
                                             (Attend)
                                         </c:if>
-                                        <c:if test="${session.status ne true}">
+                                        <c:if test="${session.status eq false}">
                                             (Absent)
                                         </c:if>
                                         <c:if test="${session.status eq null}">

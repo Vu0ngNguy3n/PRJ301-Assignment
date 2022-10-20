@@ -56,6 +56,34 @@ public class AttendenceDBContext extends DBContext<Attendence> {
         return attendences;
     }
 
+    public ArrayList<Attendence> getListAttend(String groupid) {
+        ArrayList<Attendence> attendeces = new ArrayList<>();
+        try {
+            String sql = "SELECT att.attend,ses.sessionid \n"
+                    + "	,stu.sid,stu.sname\n"
+                    + "	,att.status,att.timerecord\n"
+                    + "FROM Attendence as att\n"
+                    + "INNER JOIN [Session] as ses ON att.sessionid = ses.sessionid\n"
+                    + "INNER JOIN Student as stu ON att.sid = stu.sid\n"
+                    + "INNER JOIN [Group] as g ON g.gid = ses.gid\n"
+                    + "WHERE g.gid = ? ";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, groupid);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                Attendence a = new Attendence();
+                a.setAttend(rs.getString("attend"));
+                a.setStatus(Boolean.parseBoolean(rs.getString("status")));
+                
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendenceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return attendeces;
+
+    }
+
     public int getnum(String sessionid) {
         int number = 0;
         try {
@@ -82,13 +110,13 @@ public class AttendenceDBContext extends DBContext<Attendence> {
 
     @Override
     public void update(Attendence model) {
-       try {
+        try {
             String sql = "UPDATE [Attendence]\n"
                     + "   SET [status] = ?\n"
                     + "      ,[timerecord] = CURRENT_TIMESTAMP\n"
                     + " WHERE attend =?";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setBoolean(1, model.isStatus());
+            stm.setBoolean(1, model.getStatus());
             stm.setString(2, model.getAttend());
             stm.executeUpdate();
         } catch (SQLException ex) {
