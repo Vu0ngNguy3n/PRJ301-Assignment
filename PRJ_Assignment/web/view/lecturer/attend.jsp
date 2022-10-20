@@ -30,9 +30,12 @@
         </style>
         <script>
             function getTimeTable(id) {
-                var result = confirm("Are you sure return to TimeTable");
-                if (result === true) {
-                    window.location.href = 'timetable' ;
+                 var result = confirm("Are you sure return to TimeTable?");
+                if (result) {
+                    
+                    window.location.href("/timetable?lecturerid=" + id);
+                }else{
+                    alert('aaa');
                 }
             }
         </script>
@@ -42,7 +45,7 @@
         <form action="attend" method="POST">
             Lecturer: <input type="text" name="lecturerid" value="${requestScope.lecturerid}">
             <input type="hidden" name="sessionid" value="${requestScope.sessionid}">
-            <input type="button" value="Return" onclick="getTimeTable()"/><br/><br/>
+            <input type="button" value="Return"  onclick="getTimeTable(${requestScope.sessionid})"/><br/><br/>
             <table>
                 <tr>
                     <th>StudentID</th>

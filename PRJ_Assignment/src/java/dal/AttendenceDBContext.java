@@ -47,7 +47,7 @@ public class AttendenceDBContext extends DBContext<Attendence> {
                 stu.setSname(rs.getString("sname"));
                 a.setStudent(stu);
                 a.setStatus(rs.getBoolean("status"));
-                a.setTimerecord(rs.getDate("timerecord"));
+                a.setTimerecord(rs.getTimestamp("timerecord"));
                 attendences.add(a);
             }
         } catch (SQLException ex) {
@@ -85,7 +85,7 @@ public class AttendenceDBContext extends DBContext<Attendence> {
        try {
             String sql = "UPDATE [Attendence]\n"
                     + "   SET [status] = ?\n"
-                    + "      ,[timerecord] = GetDATE()\n"
+                    + "      ,[timerecord] = CURRENT_TIMESTAMP\n"
                     + " WHERE attend =?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setBoolean(1, model.isStatus());
