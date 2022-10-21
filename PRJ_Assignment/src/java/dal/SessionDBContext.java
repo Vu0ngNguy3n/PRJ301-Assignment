@@ -59,22 +59,22 @@ public class SessionDBContext extends DBContext<Session> {
                 Room room = new Room();
                 Subject sub = new Subject();
                 TimeSlot timeslot = new TimeSlot();
-                
+
                 lec.setLecturerid(rs.getString("lecturerid"));
                 lec.setLecturername(rs.getString("lecturername"));
                 s.setLecturer(lec);
-                
+
                 group.setGid(rs.getString("gid"));
                 s.setGroup(group);
-                
+
                 room.setRoom(rs.getString("room"));
                 room.setBuilding(rs.getString("building"));
                 s.setRoom(room);
-               
+
                 sub.setSubjectid(rs.getString("subjectid"));
                 sub.setSubjectname(rs.getString("subjectname"));
                 s.setSubject(sub);
-                
+
                 timeslot.setSlot(rs.getInt("slot"));
                 timeslot.setTime(rs.getString("time"));
                 s.setSlot(timeslot);
@@ -84,13 +84,63 @@ public class SessionDBContext extends DBContext<Session> {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listSession;
+
+    }
+
+    public ArrayList<Session> ListSlot(String gid) {
+        ArrayList<Session> sessions = new ArrayList<>();
+        try {
+            String sql = "SELECT sessionid,gid,date,room,slot,attend \n"
+                    + "FROM [Session] \n"
+                    + "WHERE  gid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, gid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Session s = new Session();
+                s.setSessionid(rs.getString("sessionid"));
+                s.setDate(rs.getDate("date"));
+                s.setStatus(rs.getBoolean("attend"));
+
+                Group g = new Group();
+                g.setGid(rs.getString("gid"));
+                s.setGroup(g);
+
+                Room r = new Room();
+                r.setRoom(rs.getString("room"));
+                s.setRoom(r);
+
+                TimeSlot t = new TimeSlot();
+                t.setSlot(rs.getInt("slot"));
+                s.setSlot(t);
+                sessions.add(s);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sessions;
+    }
+
+    public String getGid(String lecturerid) {
         
+        try {
+            String sql = "SELECT gid FROM Superviser\n"
+                    + "WHERE lecturerid =?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, lecturerid);
+            ResultSet rs = stm.executeQuery();
+            return rs.getString("gid");
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
-  
-   
-
-        
+    public static void main(String[] args) {
+        SessionDBContext s = new SessionDBContext();
+        System.out.println(s.getGid("sonnt5"));
+    }
     @Override
     public void insert(Session model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

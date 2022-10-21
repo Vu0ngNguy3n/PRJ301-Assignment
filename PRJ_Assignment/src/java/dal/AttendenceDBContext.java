@@ -73,8 +73,19 @@ public class AttendenceDBContext extends DBContext<Attendence> {
             while(rs.next()){
                 Attendence a = new Attendence();
                 a.setAttend(rs.getString("attend"));
-                a.setStatus(Boolean.parseBoolean(rs.getString("status")));
+                a.setStatus(rs.getBoolean("status"));
+                a.setTimerecord(rs.getTimestamp("timerecord"));
                 
+                Student stu = new Student();
+                Session ses = new Session();
+                
+                stu.setSid(rs.getString("sid"));
+                stu.setSname(rs.getString("sname"));
+                a.setStudent(stu);
+                
+                ses.setSessionid(rs.getString("sessionid"));
+                a.setSession(ses);
+                attendeces.add(a);
                 
             }
         } catch (SQLException ex) {
@@ -83,6 +94,9 @@ public class AttendenceDBContext extends DBContext<Attendence> {
         return attendeces;
 
     }
+    
+    
+   
 
     public int getnum(String sessionid) {
         int number = 0;

@@ -39,6 +39,7 @@
         </script>
     </head>
     <body>
+        <a href="listattend">Attend Of Class</a>
         <h2>Attendence </h2>
         <form action="attend" method="POST">
             Lecturer: <input type="text" name="lecturerid" value="${requestScope.lecturerid}">
