@@ -17,16 +17,40 @@
     </head>
     <body>
         <style>
-            table {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
+             *{
+                margin: 0;
+                padding: 0;
+                font-family: 'Ubuntu',sans-serif;
             }
-
-            td, th {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 8px;
+            body{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background: #333;
+            }
+            table {
+                border: 1px solid #151314;
+                text-align: center;
+                border-radius: 0px;
+                background: linear-gradient(145deg,#2e2e2e,#373737);
+                box-shadow: 9px 9px 18px #1f1f1f,
+                        -9px -9px 18px #474747;
+                    
+            }
+            th{
+                border: 1px solid #151314;
+                color: #00FFFF;
+                text-align: center;
+            }
+            td{
+                border: 1px solid #151314;
+                color: #00FFFF;
+                text-align: center;
+            }
+            table.center{
+                margin-left: auto;
+                margin-right: auto;
             }
 
         </style>
@@ -76,7 +100,7 @@
                                 <c:forEach items="${requestScope.sessions}" var="session">
                                     <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
                                         <c:set var="num" value="1"/>
-                                        <a href="attend?sessionid=${session.sessionid}&lecturerid=${param.lecturerid}">${session.group.getGid()}</a><br/>
+                                        <a  href="attend?sessionid=${session.sessionid}&lecturerid=${param.lecturerid}">${session.group.getGid()}</a><br/>
                                         at ${session.room.room} <br/>
                                         <c:if test="${session.status eq true}">
                                             (Attend)

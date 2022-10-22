@@ -39,13 +39,15 @@
         </script>
     </head>
     <body>
-        <a href="listattend">Attend Of Class</a>
+       <a href="timetable?lecturerid=${requestScope.lecturerid}">Return</a>
+            
+        <a href="listattend?gid=${requestScope.gid}">Attend Of Class</a>
         <h2>Attendence </h2>
         <form action="attend" method="POST">
             Lecturer: <input type="text" name="lecturerid" value="${requestScope.lecturerid}">
             <input type="hidden" name="sessionid" value="${requestScope.sessionid}">
-            <input type="button" value="Return"  onclick="getTimeTable(${lecturerid})"/><br/><br/>
-            
+            <input type="hidden" name="gid" value="${requestScope.gid}">
+           
             <table>
                 <tr>
                     <th>StudentID</th>

@@ -5,6 +5,7 @@
 package controller;
 
 import dal.AttendenceDBContext;
+import dal.SessionDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,9 @@ public class AttendController extends HttpServlet {
         AttendenceDBContext attendDB = new AttendenceDBContext();
         ArrayList<Attendence> attendlist = attendDB.getlistStudent(sessionid);
         String lecturerid = request.getParameter("lecturerid");
+        SessionDBContext sesDB = new SessionDBContext();
+        String gid = sesDB.getGid(lecturerid);
+        request.setAttribute("gid", gid);
         request.setAttribute("lecturerid", lecturerid);
         request.setAttribute("attend", attendlist);
         request.setAttribute("sessionid", sessionid);
@@ -44,6 +48,7 @@ public class AttendController extends HttpServlet {
             throws ServletException, IOException {
         String sessionid = request.getParameter("sessionid");
         String lecturerid = request.getParameter("lecturerid");
+        String gid = request.getParameter("gid");
         AttendenceDBContext attendDB = new AttendenceDBContext();
         int number = attendDB.getnum(sessionid);
         for(int i=1; i<= number; i++){
@@ -60,6 +65,7 @@ public class AttendController extends HttpServlet {
         ArrayList<Attendence> attendlist = attendDB.getlistStudent(sessionid);
         request.setAttribute("lecturerid", lecturerid);
         request.setAttribute("attend", attendlist);
+        request.setAttribute("gid", gid);
         request.setAttribute("sessionid", sessionid);
         request.getRequestDispatcher("../view/lecturer/attend.jsp").forward(request, response);
     }

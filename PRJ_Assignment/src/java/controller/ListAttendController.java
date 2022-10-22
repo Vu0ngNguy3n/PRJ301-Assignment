@@ -6,6 +6,7 @@ package controller;
 
 import dal.AttendenceDBContext;
 import dal.SessionDBContext;
+import dal.StudentDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import model.Attendence;
 import model.Session;
+import model.Student;
 
 /**
  *
@@ -29,13 +31,14 @@ public class ListAttendController extends HttpServlet {
         
         AttendenceDBContext attendDB = new AttendenceDBContext();
         SessionDBContext sessionDB = new SessionDBContext();
-        
+        StudentDBContext studentDB = new StudentDBContext();
         ArrayList<Attendence> attends = attendDB.getListAttend(gid);
         ArrayList<Session> sessions = sessionDB.ListSlot(gid);
-        
+        ArrayList<Student> students = studentDB.listStudent(gid);
+        request.setAttribute("gid", gid);
         request.setAttribute("attends", attends);
         request.setAttribute("sessions", sessions);
-        
+        request.setAttribute("students", students);
         request.getRequestDispatcher("../view/lecturer/listattend.jsp").forward(request, response);
     }
 

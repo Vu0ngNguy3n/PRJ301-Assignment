@@ -5,6 +5,7 @@
 package dal;
 
 import helper.DateTimeHelper;
+import jakarta.servlet.jsp.jstl.sql.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -123,24 +124,23 @@ public class SessionDBContext extends DBContext<Session> {
     }
 
     public String getGid(String lecturerid) {
-        
         try {
             String sql = "SELECT gid FROM Superviser\n"
                     + "WHERE lecturerid =?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, lecturerid);
             ResultSet rs = stm.executeQuery();
-            return rs.getString("gid");
+            if(rs.next()){
+                return rs.getString("gid");
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
     
-    public static void main(String[] args) {
-        SessionDBContext s = new SessionDBContext();
-        System.out.println(s.getGid("sonnt5"));
-    }
+   
     @Override
     public void insert(Session model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
