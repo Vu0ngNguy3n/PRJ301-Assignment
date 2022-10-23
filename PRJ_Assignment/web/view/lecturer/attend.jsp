@@ -41,7 +41,7 @@
     <body>
        <a href="timetable?lecturerid=${requestScope.lecturerid}">Return</a>
             
-        <a href="listattend?gid=${requestScope.gid}">Attend Of Class</a>
+       <a href="listattend?gid=${requestScope.gid}&lecturerid=${requestScope.lecturerid}">Attend Of Class</a>
         <h2>Attendence </h2>
         <form action="attend" method="POST">
             Lecturer: <input type="text" name="lecturerid" value="${requestScope.lecturerid}">

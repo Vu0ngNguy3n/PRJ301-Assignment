@@ -27,6 +27,7 @@ public class ListAttendController extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String lecturerid = request.getParameter("lecturerid");
         String gid = request.getParameter("gid");
         
         AttendenceDBContext attendDB = new AttendenceDBContext();
@@ -35,6 +36,7 @@ public class ListAttendController extends HttpServlet {
         ArrayList<Attendence> attends = attendDB.getListAttend(gid);
         ArrayList<Session> sessions = sessionDB.ListSlot(gid);
         ArrayList<Student> students = studentDB.listStudent(gid);
+        request.setAttribute("lecturerid", lecturerid);
         request.setAttribute("gid", gid);
         request.setAttribute("attends", attends);
         request.setAttribute("sessions", sessions);
