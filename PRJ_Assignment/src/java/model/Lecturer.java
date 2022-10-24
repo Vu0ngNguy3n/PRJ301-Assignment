@@ -13,16 +13,28 @@ import java.util.ArrayList;
 public class Lecturer {
     private String lecturerid;
     private String lecturername;
+    private String account;
     private ArrayList<Group> groups = new ArrayList<>();
     private ArrayList<Session> sessions = new ArrayList<>();
 
     public Lecturer() {
     }
 
-    public Lecturer(String lecturerid, String lecturername) {
+    public Lecturer(String lecturerid, String lecturername, String account) {
         this.lecturerid = lecturerid;
         this.lecturername = lecturername;
+        this.account = account;
     }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    
 
     public ArrayList<Group> getGroups() {
         return groups;

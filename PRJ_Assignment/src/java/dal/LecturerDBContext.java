@@ -18,6 +18,8 @@ import model.Lecturer;
  */
 public class LecturerDBContext extends DBContext<Lecturer> {
 
+    
+
     @Override
     public void insert(Lecturer model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -45,8 +47,8 @@ public class LecturerDBContext extends DBContext<Lecturer> {
         try {
             String sql = "Select lecturerid, lecturername FROM Lecturer";
             PreparedStatement stm = connection.prepareStatement(sql);
-            ResultSet rs= stm.executeQuery();
-            while(rs.next()){
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
                 Lecturer l = new Lecturer();
                 l.setLecturerid(rs.getString("lecturerid"));
                 l.setLecturername(rs.getString("lecturername"));
@@ -65,7 +67,7 @@ public class LecturerDBContext extends DBContext<Lecturer> {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, id);
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 Lecturer lec = new Lecturer();
                 lec.setLecturerid(rs.getString("lecturerid"));
                 lec.setLecturername(rs.getString("lecturername"));
@@ -77,6 +79,5 @@ public class LecturerDBContext extends DBContext<Lecturer> {
         }
         return null;
     }
-    
 
 }

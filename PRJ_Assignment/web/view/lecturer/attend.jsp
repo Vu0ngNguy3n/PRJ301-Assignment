@@ -39,9 +39,9 @@
         </script>
     </head>
     <body>
-       <a href="timetable?lecturerid=${requestScope.lecturerid}">Return</a>
+        <a href="timetable?lecturerid=${sessionScope.account.lecturerid}">Return</a>
             
-       <a href="listattend?gid=${requestScope.gid}&lecturerid=${requestScope.lecturerid}">Attend Of Class</a>
+       <a href="/PRJ_Assignment/lecturer/listattend?gid=${requestScope.gid}&lecturerid=${sessionScope.account.lecturerid}">Attend Of Class</a>
         <h2>Attendence </h2>
         <form action="attend" method="POST">
             Lecturer: <input type="text" name="lecturerid" value="${requestScope.lecturerid}">

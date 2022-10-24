@@ -12,10 +12,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import model.Account;
 import model.Lecturer;
 import model.Session;
 import model.TimeSlot;
@@ -30,7 +32,9 @@ public class TimetableController extends HttpServlet {
   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String lecturerid = request.getParameter("lecturerid");
+        
+        Account account = (Account)request.getSession().getAttribute("account");
+        String lecturerid = account.getLecturerid();
         String from_e = request.getParameter("from");
         String to_e = request.getParameter("to");
         java.sql.Date from =null;
@@ -54,9 +58,7 @@ public class TimetableController extends HttpServlet {
         request.setAttribute("to", to);
         request.setAttribute("datelist", DateTimeHelper.getDateList(from, to));
         
-        LecturerDBContext lecDB = new LecturerDBContext();
-        ArrayList<Lecturer> lecturer = lecDB.list();
-        request.setAttribute("lecturer", lecturer);
+      
         
         TimeslotDBContext timeDB = new TimeslotDBContext();
         ArrayList<TimeSlot> timeslot = timeDB.list();

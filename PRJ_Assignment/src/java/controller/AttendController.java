@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import model.Account;
 import model.Attendence;
 
 
@@ -32,11 +33,12 @@ public class AttendController extends HttpServlet {
         String sessionid = request.getParameter("sessionid");
         AttendenceDBContext attendDB = new AttendenceDBContext();
         ArrayList<Attendence> attendlist = attendDB.getlistStudent(sessionid);
-        String lecturerid = request.getParameter("lecturerid");
+        Account account = (Account)request.getSession().getAttribute("account");
+        String lecturerid = account.getLecturerid();
         SessionDBContext sesDB = new SessionDBContext();
         String gid = sesDB.getGid(lecturerid);
         request.setAttribute("gid", gid);
-        request.setAttribute("lecturerid", lecturerid);
+
         request.setAttribute("attend", attendlist);
         request.setAttribute("sessionid", sessionid);
         request.getRequestDispatcher("../view/lecturer/attend.jsp").forward(request, response);
@@ -47,7 +49,6 @@ public class AttendController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String sessionid = request.getParameter("sessionid");
-        String lecturerid = request.getParameter("lecturerid");
         String gid = request.getParameter("gid");
         AttendenceDBContext attendDB = new AttendenceDBContext();
         int number = attendDB.getnum(sessionid);
@@ -63,7 +64,7 @@ public class AttendController extends HttpServlet {
             attendDB.update(a);
         }
         ArrayList<Attendence> attendlist = attendDB.getlistStudent(sessionid);
-        request.setAttribute("lecturerid", lecturerid);
+        
         request.setAttribute("attend", attendlist);
         request.setAttribute("gid", gid);
         request.setAttribute("sessionid", sessionid);

@@ -50,7 +50,7 @@
         </style>
     </head>
     <body>
-        <a href="timetable?lecturerid=${requestScope.lecturerid}">Home</a>
+        <a href="timetable?lecturerid=${sessionScope.account.lecturerid}">Home</a>
         <input style="display: block" type="text" name="gid" value="${requestScope.gid}">
         <table class="center">
             <tr>

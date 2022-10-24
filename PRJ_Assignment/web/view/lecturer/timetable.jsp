@@ -17,54 +17,35 @@
     </head>
     <body>
         <style>
-             *{
-                margin: 0;
-                padding: 0;
-                font-family: 'Ubuntu',sans-serif;
-            }
-            body{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                background: #333;
-            }
             table {
-                border: 1px solid #151314;
-                text-align: center;
-                border-radius: 0px;
-                background: linear-gradient(145deg,#2e2e2e,#373737);
-                box-shadow: 9px 9px 18px #1f1f1f,
-                        -9px -9px 18px #474747;
-                    
-            }
-            th{
-                border: 1px solid #151314;
-                color: #00FFFF;
-                text-align: center;
-            }
-            td{
-                border: 1px solid #151314;
-                color: #00FFFF;
-                text-align: center;
-            }
-            table.center{
-                margin-left: auto;
-                margin-right: auto;
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
             }
 
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
         </style>
         <form action="timetable" method="GET">
             <div align="center">
-                Lecturer: <input type="text" name="lecturerid" value="${param.lecturerid}">
-                
+                Lecturer: <input type="text" name="lecturerid" value="${sessionScope.account.displayname}">
+
                 <br/>
 
                 From: <input type="date" name="from" value="${requestScope.from}">
                 To: <input type="date" name="to" value="${requestScope.to}"}>
                 <input type="submit" value="View">
-            </div><br><br>
+                
         </form> 
+                <a  href="/PRJ_Assignment/logout">Logout</a>
+               </div><br><br>
         <table border="1px">
             <thead style="background-color: #0fcc45;">
                 <tr>
@@ -95,12 +76,12 @@
                             <c:forEach items="${requestScope.datelist}" var="datelist">
                             <td>
                                 <c:set var="num" value="0">
-                                    
+
                                 </c:set>
                                 <c:forEach items="${requestScope.sessions}" var="session">
                                     <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
                                         <c:set var="num" value="1"/>
-                                        <a  href="attend?sessionid=${session.sessionid}&lecturerid=${param.lecturerid}">${session.group.getGid()}</a><br/>
+                                        <a  href="/PRJ_Assignment/lecturer/attend?sessionid=${session.sessionid}">${session.group.getGid()}</a><br/>
                                         at ${session.room.room} <br/>
                                         <c:if test="${session.status eq true}">
                                             (Attend)
@@ -114,9 +95,9 @@
 
                                     </c:if>
                                 </c:forEach>
-                                            <c:if test="${num eq 0}">
-                                        -
-                                    </c:if>
+                                <c:if test="${num eq 0}">
+                                    -
+                                </c:if>
                             </td>
 
 
