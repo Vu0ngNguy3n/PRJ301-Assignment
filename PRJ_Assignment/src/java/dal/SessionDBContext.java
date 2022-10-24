@@ -26,6 +26,19 @@ import model.TimeSlot;
  */
 public class SessionDBContext extends DBContext<Session> {
 
+    
+    public void updateSes(String sessionid){
+        try {
+            String sql = "UPDATE [Session] SET attend = 'true'\n"
+                    + "WHERE sessionid =?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, sessionid);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public ArrayList<Session> listSession(String lecturerid, Date from, Date to) {
         ArrayList<Session> listSession = new ArrayList<>();
         try {
@@ -130,17 +143,16 @@ public class SessionDBContext extends DBContext<Session> {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, lecturerid);
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getString("gid");
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
-   
+
     @Override
     public void insert(Session model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -148,7 +160,13 @@ public class SessionDBContext extends DBContext<Session> {
 
     @Override
     public void update(Session model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String sql = "UPDATE [Session] SET attend = 'true'\n"
+                    + "WHERE sessionid =?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

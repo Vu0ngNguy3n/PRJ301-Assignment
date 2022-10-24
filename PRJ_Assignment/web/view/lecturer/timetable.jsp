@@ -33,7 +33,7 @@
                 background-color: #dddddd;
             }
         </style>
-        <form action="timetable" method="GET">
+        <form action="/PRJ_Assignment/lecturer/timetable?lecturerid=${sessionScope.account.lecturerid}&from=${param.from}&to=${param.to}" method="GET">
             <div align="center">
                 Lecturer: <input type="text" name="lecturerid" value="${sessionScope.account.displayname}">
 
@@ -81,16 +81,16 @@
                                 <c:forEach items="${requestScope.sessions}" var="session">
                                     <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
                                         <c:set var="num" value="1"/>
-                                        <a  href="/PRJ_Assignment/lecturer/attend?sessionid=${session.sessionid}">${session.group.getGid()}</a><br/>
+                                        <a style='text-decoration: none'  href="/PRJ_Assignment/lecturer/attend?sessionid=${session.sessionid}">${session.group.getGid()}</a><br/>
                                         at ${session.room.room} <br/>
-                                        <c:if test="${session.status eq true}">
-                                            (Attend)
+                                        <c:if test="${session.status eq true }">
+                                            <i style="color: green   ">(Attend)</i>
                                         </c:if>
-                                        <c:if test="${session.status eq false}">
-                                            (Absent)
+                                        <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) eq 1)}" >
+                                            <i style="color: red   ">(Absent)</i>
                                         </c:if>
-                                        <c:if test="${session.status eq null}">
-                                            (not yet)
+                                        <c:if test="${session.status eq null or (helper.compare(helper.dateToday(),datelist) eq -1)}">
+                                            <i style="color: yellow   ">(Not yet)</i>
                                         </c:if>
 
                                     </c:if>

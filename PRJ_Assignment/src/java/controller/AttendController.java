@@ -51,6 +51,7 @@ public class AttendController extends HttpServlet {
         String sessionid = request.getParameter("sessionid");
         String gid = request.getParameter("gid");
         AttendenceDBContext attendDB = new AttendenceDBContext();
+        SessionDBContext sessionDB = new SessionDBContext();
         int number = attendDB.getnum(sessionid);
         for(int i=1; i<= number; i++){
             Attendence a = new Attendence();
@@ -63,6 +64,7 @@ public class AttendController extends HttpServlet {
             
             attendDB.update(a);
         }
+        sessionDB.updateSes(sessionid);
         ArrayList<Attendence> attendlist = attendDB.getlistStudent(sessionid);
         
         request.setAttribute("attend", attendlist);
