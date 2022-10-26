@@ -16,12 +16,12 @@ import java.io.PrintWriter;
  *
  * @author admin
  */
-public class LogoutController extends HttpServlet {
+public class HomeController extends HttpServlet {
 
+ 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession().setAttribute("account", null);
-        request.getRequestDispatcher("login?status=1").forward(request, response);
+        response.sendRedirect("view/login/home/home.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

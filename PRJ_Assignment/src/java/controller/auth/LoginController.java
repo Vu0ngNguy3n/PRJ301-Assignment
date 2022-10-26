@@ -15,23 +15,23 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import model.Account;
 
-
 /**
  *
  * @author admin
  */
 public class LoginController extends HttpServlet {
 
-   
-
-  
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int status = 0;
+        if (request.getParameter("status") != null) {
+            status = Integer.parseInt(request.getParameter("status"));
+        }
+        request.setAttribute("status", status);
         request.getRequestDispatcher("/view/login/login.jsp").forward(request, response);
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -39,13 +39,13 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
         AccountDBContext accountDB = new AccountDBContext();
         Account account = accountDB.getAccount(username, password);
-        if(account == null){
-            response.sendRedirect("login");
-        }else{
-           request.getSession().setAttribute("account", account);
+        if (account == null) {
+            response.sendRedirect("login?status=2");
+        } else {
+            request.getSession().setAttribute("account", account);
+            request.getSession().setMaxInactiveInterval(100);
             request.getRequestDispatcher("/lecturer/timetable").forward(request, response);
         }
     }
 
-  
 }

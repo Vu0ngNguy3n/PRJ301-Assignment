@@ -13,107 +13,152 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>FAP TimeTable</title>
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+        <style>
+            .content-table{
+                margin-left: auto;
+                margin-right: auto;
+                border-collapse: collapse;
+                margin: 25px 0;
+                font-size: 0.9em;
+                min-width: 400px;
+                border-radius: 5px 5px 0 0;
+                overflow: hidden;
+                box-shadow: 0 0 20px rgba(0,0,0,.15);
+            }
+            .content-table thead tr{
+                background-color: #009879;
+                color: #ffffff;
+                text-align: left;
+                font-weight: bold;
+            }
+            th, td {
+                border: 1px solid #009879;
+            }
+            .content-table th,
+            .content-table td{
+                padding: 12px 15px;
+            }
+            .content-table tbody tr{
+                border-bottom: 1px solid #dddddd;
+            }
+            .content-table tbody tr:nth-of-type(even){
+                background-color: #f3f3f3;
+            }
+            .content-table tbody tr:last-of-type{
+                border-bottom: 2px solid #009879;
+            }
+            
+        </style>
     </head>
     <body>
-        <style>
-            table {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
-            }
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" >
+            <div class="container" >
+                <a class="navbar-brand" href="#">
+                    <img src="view/lecturer/logo.jpg" alt="logo" height="44">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Hello Mr.${sessionScope.account.displayname}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">List Attend</a>
+                        </li>
 
-            td, th {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }
+                        <li class="nav-item dropdown">
+                            <a class="nav-link " href="/PRJ_Assignment/logout" id="navbarDropdown" >
+                                Logout
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </a>
+                            <
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-            tr:nth-child(even) {
-                background-color: #dddddd;
-            }
-        </style>
-        <form action="/PRJ_Assignment/lecturer/timetable?lecturerid=${sessionScope.account.lecturerid}&from=${param.from}&to=${param.to}" method="GET">
-            <div align="center">
-                Lecturer: <input type="text" name="lecturerid" value="${sessionScope.account.displayname}">
 
-                <br/>
+    </div><br><br>
+    <table class="content-table">
+        <thead >
+            <tr>
+                <th >
+                    <form action="/PRJ_Assignment/lecturer/timetable?lecturerid=${sessionScope.account.lecturerid}&from=${param.from}&to=${param.to}" method="GET">
 
-                From: <input type="date" name="from" value="${requestScope.from}">
-                To: <input type="date" name="to" value="${requestScope.to}"}>
-                <input type="submit" value="View">
-                
-        </form> 
-                <a  href="/PRJ_Assignment/logout">Logout</a>
-               </div><br><br>
-        <table border="1px">
-            <thead style="background-color: #0fcc45;">
-                <tr>
+                        <input type="hidden" name="lecturerid" value="${sessionScope.account.displayname}">
 
-                    <th rowspan="2" align="left">
+                        Date From: <input type="date" name="from" value="${requestScope.from}"><br/>
+                        Date To: <input type="date" name="to" value="${requestScope.to}"}>
+                        <input type="submit" value="View">
 
-                        <br>Time From: <input type="date"><br>
-                        Time To: <input type="date" name="" id="" style="margin-top:5px; ;" >
-                    </th>
-                    <c:forEach items="${requestScope.datelist}" var="datelist">
-                        <th align="center"> ${datelist}</th>
-                        </c:forEach>
+                    </form> 
 
-                </tr>
+                </th>
+                <c:forEach items="${requestScope.datelist}" var="datelist">
+                    <th align="center"> ${datelist} <br/>${helper.getDayNameofWeek(datelist)}</th>
+                    </c:forEach>
+
+            </tr>
+
+        </thead>
+        <tbody>
+
+            <c:forEach items="${requestScope.slots}" var="s">
                 <tr >
-                    <c:forEach items="${requestScope.datelist}" var="datelist">
-                        <th align="center">${helper.getDayNameofWeek(datelist)}</th>
-                        </c:forEach>
+                    <td style="background-color: #A4C3A2;">Slot ${s.slot}<br/> ${s.time}</td>
+                        <c:forEach items="${requestScope.datelist}" var="datelist">
+                        <td align="center" >
+                            <c:set var="num" value="0">
 
-
-                </tr>
-            </thead>
-            <tbody>
-
-                <c:forEach items="${requestScope.slots}" var="s">
-                    <tr>
-                        <td text-align="center">Slot ${s.slot}<br/> ${s.time}</td>
-                            <c:forEach items="${requestScope.datelist}" var="datelist">
-                            <td>
-                                <c:set var="num" value="0">
-
-                                </c:set>
-                                <c:forEach items="${requestScope.sessions}" var="session">
-                                    <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
-                                        <c:set var="num" value="1"/>
-                                        <a style='text-decoration: none'  href="/PRJ_Assignment/lecturer/attend?sessionid=${session.sessionid}">${session.group.getGid()}</a><br/>
-                                        at ${session.room.room} <br/>
-                                        <c:if test="${session.status eq true }">
-                                            <i style="color: green   ">(Attend)</i>
-                                        </c:if>
-                                        <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) eq 1)}" >
-                                            <i style="color: red   ">(Absent)</i>
-                                        </c:if>
-                                        <c:if test="${session.status eq null or (helper.compare(helper.dateToday(),datelist) eq -1)}">
-                                            <i style="color: yellow   ">(Not yet)</i>
-                                        </c:if>
-
+                            </c:set>
+                            <c:forEach items="${requestScope.sessions}" var="session">
+                                <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
+                                    <c:set var="num" value="1"/>
+                                   
+                                        <a style='text-decoration: none '  href="/PRJ_Assignment/lecturer/attend?sessionid=${session.sessionid}">${session.group.getGid()}</a><br/>
+                                  
+                                    at ${session.room.room} <br/>
+                                    <c:if test="${session.status eq true }">
+                                        <i style="color: green   ">(Attend)</i>
                                     </c:if>
-                                </c:forEach>
-                                <c:if test="${num eq 0}">
-                                    -
+                                    <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) == 1)}" >
+                                        <i style="color: red   ">(Absent)</i>
+                                    </c:if>
+                                    <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) == 0)}" >
+                                        <i style="color: blue   ">(Happening)</i>
+                                    </c:if>
+                                    <c:if test="${session.status eq null or (helper.compare(helper.dateToday(),datelist) eq -1)}">
+                                        <i style="color: yellow   ">(Not yet)</i>
+                                    </c:if>
+
                                 </c:if>
-                            </td>
+                            </c:forEach>
+                            <c:if test="${num eq 0}">
+                                -
+                            </c:if>
+
+                        </td>
 
 
-                        </c:forEach>
-                    </tr>
-                </c:forEach>
+                    </c:forEach>
+                </tr>
+            </c:forEach>
 
 
-            </tbody>
-        </table>
-
-
-
+        </tbody>
+    </table>
 
 
 
 
-    </body>
+
+
+
+</body>
 </html>
