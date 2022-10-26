@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
         <style>
             .content-table{
+                width: 75%;
                 margin-left: auto;
                 margin-right: auto;
                 border-collapse: collapse;
@@ -50,7 +51,7 @@
             .content-table tbody tr:last-of-type{
                 border-bottom: 2px solid #009879;
             }
-            
+
         </style>
     </head>
     <body>
@@ -65,7 +66,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Hello Mr.${sessionScope.account.displayname}</a>
+                            <a class="nav-link" href="#">
+                                Hello Mr.${sessionScope.account.displayname}
+                                <i class="fa-solid fa-chalkboard-user"></i>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">List Attend</a>
@@ -95,7 +99,7 @@
 
                         Date From: <input type="date" name="from" value="${requestScope.from}"><br/>
                         Date To: <input type="date" name="to" value="${requestScope.to}"}>
-                        <input type="submit" value="View">
+                        <button type="submit" ><i class="fa-solid fa-eye"></i></button>
 
                     </form> 
 
@@ -120,9 +124,9 @@
                             <c:forEach items="${requestScope.sessions}" var="session">
                                 <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
                                     <c:set var="num" value="1"/>
-                                   
-                                        <a style='text-decoration: none '  href="/PRJ_Assignment/lecturer/attend?sessionid=${session.sessionid}">${session.group.getGid()}</a><br/>
-                                  
+
+                                    <a style='text-decoration: none '  href="/PRJ_Assignment/lecturer/attend?sessionid=${session.sessionid}">${session.group.getGid()}</a><br/>
+
                                     at ${session.room.room} <br/>
                                     <c:if test="${session.status eq true }">
                                         <i style="color: green   ">(Attend)</i>

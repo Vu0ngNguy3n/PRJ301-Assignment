@@ -11,61 +11,102 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
         <title>JSP Page</title>
         <style>
-            *{
-                margin: 0;
-                padding: 0;
-                font-family: 'Ubuntu',sans-serif;
-            }
-            body{
-                
-                align-items: center;
-                min-height: 100vh;
-                background: #333;
-            }
-            table {
-                border: 1px solid #151314;
-                text-align: center;
-                border-radius: 0px;
-                background: linear-gradient(145deg,#2e2e2e,#373737);
-                box-shadow: 9px 9px 18px #1f1f1f,
-                        -9px -9px 18px #474747;
-                    
-            }
-            th{
-                border: 1px solid #151314;
-                color: #00FFFF;
-                text-align: center;
-            }
-            td{
-                border: 1px solid #151314;
-                color: #00FFFF;
-                text-align: center;
-            }
-            table.center{
+            .content-table{
+               
                 margin-left: auto;
                 margin-right: auto;
+                border-collapse: collapse;
+                margin: 25px 0;
+                font-size: 0.9em;
+                min-width: 400px;
+                border-radius: 5px 5px 0 0;
+                overflow: hidden;
+                box-shadow: 0 0 20px rgba(0,0,0,.15);
+            }
+            .content-table thead tr{
+                background-color: #009879;
+                color: #ffffff;
+                text-align: left;
+                font-weight: bold;
+            }
+            th, td {
+                border: 1px solid #009879;
+            }
+            .content-table th,
+            .content-table td{
+                padding: 12px 15px;
+            }
+            .content-table tbody tr{
+                border-bottom: 1px solid #dddddd;
+            }
+            .content-table tbody tr:nth-of-type(even){
+                background-color: #f3f3f3;
+            }
+            .content-table tbody tr:last-of-type{
+                border-bottom: 2px solid #009879;
             }
         </style>
     </head>
     <body>
+        
+         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" >
+            <div class="container" >
+                <a class="navbar-brand" href="#">
+                    <img src="view/lecturer/logo.jpg" alt="logo" height="44">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Hello Mr.${sessionScope.account.displayname}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="timetable?lecturerid=${sessionScope.account.lecturerid}">
+                                TimeTable
+                               <i class="fa-sharp fa-solid fa-table"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="/PRJ_Assignment/lecturer/listattend?gid=${requestScope.gid}&lecturerid=${sessionScope.account.lecturerid}">
+                                Attend Of This Class
+                                <i class="fa-solid fa-list-check"></i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link " href="/PRJ_Assignment/logout" id="navbarDropdown" >
+                                Logout
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </a>
+                            <
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         <a href="timetable?lecturerid=${sessionScope.account.lecturerid}">Home</a>
         <input style="display: block" type="text" name="gid" value="${requestScope.gid}">
-        <table class="center">
+        <table class="content-table">
             <tr>
                 <th></th>
                     <c:forEach items="${requestScope.sessions}" var="ses" varStatus="s">
-                    <th >Slot ${s.count}</th>
+                    <th style="background-color: #009879" >Slot ${s.count}</th>
                     </c:forEach>
-                <th>Attendence Report</th>
+                <th style="background-color: #009879">Attendence Report</th>
             </tr>
 
             <c:forEach items="${requestScope.students}" var="students">
                 <tr>
                     <c:set var="attended" value="0"/>
                     <c:set var="total" value="0"/>
-                    <td>${students.sid} - ${students.sname}</td>
+                    <td style="background-color: #A4C3A2;">${students.sid} - ${students.sname}</td>
                     <c:forEach items="${requestScope.sessions}" var="ses" >
 
                         <c:forEach items="${requestScope.attends}" var="att">
