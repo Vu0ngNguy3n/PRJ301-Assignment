@@ -18,20 +18,19 @@ import model.Role;
  *
  * @author admin
  */
-public class AccountDBContext extends DBContext<Account>{
+public class AccountDBContext extends DBContext<Account> {
 
-    
-    public Account getAccount(String username, String password){
+    public Account getAccount(String username, String password) {
         try {
-            String sql = "SELECT acc.username, acc.displayname,acc.lecturerid\n"
-                    + "	,r.rid,r.rname\n"
-                    + "	,f.fid,f.fname,f.url\n"
-                    + "FROM Account as acc\n"
-                    + "INNER JOIN Role_Account as ra ON acc.username= ra.username\n"
-                    + "INNER JOIN [Role] as r ON ra.rid = r.rid\n"
-                    + "INNER JOIN Role_Feature as rf ON rf.rid = r.rid\n"
-                    + "INNER JOIN Feature as f ON rf.fid = f.fid\n"
-                    + "WHERE acc.username = ? AND acc.[password] = ?";
+            String sql = "SELECT acc.username,acc.displayname,acc.lecturerid\n"
+                    + ",r.rid,r.rname\n"
+                    + ",f.fid,f.fname,f.url\n"
+                    + "FROM Account as acc \n"
+                    + "LEFT JOIN Role_Account as ra ON acc.username =ra.username\n"
+                    + "LEFT JOIN [Role] as r ON r.rid = ra.rid\n"
+                    + "LEFT JOIN Role_Feature as rf ON rf.rid = r.rid \n"
+                    + "LEFT JOIN Feature as f  ON f.fid = rf.fid\n"
+                    + "WHERE acc.username = ? AND acc.[password] =?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             stm.setString(2, password);
@@ -39,16 +38,16 @@ public class AccountDBContext extends DBContext<Account>{
             Account account = null;
             Role currentRole = new Role();
             currentRole.setRid(-1);
-            while(rs.next()){
-                if(account==null){
+            while (rs.next()) {
+                if (account == null) {
                     account = new Account();
                     account.setUsername(rs.getString("username"));
                     account.setDisplayname(rs.getString("displayname"));
                     account.setLecturerid(rs.getString("lecturerid"));
                 }
                 int rid = rs.getInt("rid");
-                if(rid!=0){
-                    if(rid!= currentRole.getRid()){
+                if (rid != 0) {
+                    if (rid != currentRole.getRid()) {
                         currentRole = new Role();
                         currentRole.setRid(rs.getInt("rid"));
                         currentRole.setRname(rs.getString("rname"));
@@ -56,7 +55,7 @@ public class AccountDBContext extends DBContext<Account>{
                     }
                 }
                 int fid = rs.getInt("fid");
-                if(fid!=0){
+                if (fid != 0) {
                     Feature feature = new Feature();
                     feature.setFid(rs.getInt("fid"));
                     feature.setFname(rs.getString("fname"));
@@ -70,9 +69,7 @@ public class AccountDBContext extends DBContext<Account>{
         }
         return null;
     }
-    
-   
-    
+
     @Override
     public void insert(Account model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -103,5 +100,4 @@ public class AccountDBContext extends DBContext<Account>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    
 }

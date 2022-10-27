@@ -48,7 +48,9 @@ public class AttendController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Account account = (Account)request.getSession().getAttribute("account");
         String sessionid = request.getParameter("sessionid");
+        
         String gid = request.getParameter("gid");
         AttendenceDBContext attendDB = new AttendenceDBContext();
         SessionDBContext sessionDB = new SessionDBContext();

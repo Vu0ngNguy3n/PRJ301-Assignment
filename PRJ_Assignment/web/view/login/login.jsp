@@ -51,11 +51,7 @@
                         <input type="password" placeholder="Enter Password" required name="password" >
                     </div>
                     <div class="form-item-other">
-                        <div class="checkbox">
-                            <input type="checkbox" name="rememberMeCheckbox" >
-                            <label for="rememberMeCheckbox">Remember Me</label>
-                        </div>
-                        <a href="#">I forgot my password!</a>
+                        
                     </div>
                     <button type="submit">Sign In</button>
                 </form>

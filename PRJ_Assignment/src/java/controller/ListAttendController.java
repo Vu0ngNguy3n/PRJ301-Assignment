@@ -29,6 +29,7 @@ public class ListAttendController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
+        Account account = (Account)request.getSession().getAttribute("account");
         String gid = request.getParameter("gid");
         
         

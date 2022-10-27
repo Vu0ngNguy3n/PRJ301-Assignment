@@ -57,7 +57,7 @@
          <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" >
             <div class="container" >
                 <a class="navbar-brand" href="#">
-                    <img src="view/lecturer/logo.jpg" alt="logo" height="44">
+                    <img src="${pageContext.request.contextPath}/view/lecturer/logo.jpg" alt="logo" height="44">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

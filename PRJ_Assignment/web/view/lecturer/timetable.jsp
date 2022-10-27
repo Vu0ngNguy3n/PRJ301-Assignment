@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
         <style>
             .content-table{
+                
                 width: 75%;
                 margin-left: auto;
                 margin-right: auto;
@@ -51,14 +52,22 @@
             .content-table tbody tr:last-of-type{
                 border-bottom: 2px solid #009879;
             }
-
+            .navbar-nav .nav-item{
+                padding: 5px 5px;
+            }
         </style>
+        <script >
+            function notification() {
+                alert("You don't have enough permission to change attendence of this slot");
+            }
+            
+        </script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" >
             <div class="container" >
                 <a class="navbar-brand" href="#">
-                    <img src="view/lecturer/logo.jpg" alt="logo" height="44">
+                    <img src="${pageContext.request.contextPath}/view/lecturer/logo.jpg" alt="logo" height="36">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -76,7 +85,7 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link " href="/PRJ_Assignment/logout" id="navbarDropdown" >
+                            <a class="nav-link " href="${pageContext.request.contextPath}/logout" id="navbarDropdown" >
                                 Logout
                                 <i class="fa-solid fa-right-from-bracket"></i>
                             </a>
@@ -89,75 +98,75 @@
 
 
     </div><br><br>
-    <table class="content-table">
-        <thead >
-            <tr>
-                <th >
-                    <form action="/PRJ_Assignment/lecturer/timetable?lecturerid=${sessionScope.account.lecturerid}&from=${param.from}&to=${param.to}" method="GET">
+    <div style="display: flex; justify-content: center;"><table class="content-table">
+            <thead >
+                <tr>
+                    <th >
+                        <form action="${pageContext.request.contextPath}/lecturer/timetable?lecturerid=${sessionScope.account.lecturerid}&from=${param.from}&to=${param.to}" method="GET">
 
-                        <input type="hidden" name="lecturerid" value="${sessionScope.account.displayname}">
+                            <input type="hidden" name="lecturerid" value="${sessionScope.account.displayname}">
 
-                        Date From: <input type="date" name="from" value="${requestScope.from}"><br/>
-                        Date To: <input type="date" name="to" value="${requestScope.to}"}>
-                        <button type="submit" ><i class="fa-solid fa-eye"></i></button>
+                            Date From: <input type="date" name="from" value="${requestScope.from}"><br/>
+                            Date To: <input type="date" name="to" value="${requestScope.to}"}>
+                            <button type="submit" ><i class="fa-solid fa-eye"></i></button>
 
-                    </form> 
+                        </form> 
 
-                </th>
-                <c:forEach items="${requestScope.datelist}" var="datelist">
-                    <th align="center"> ${datelist} <br/>${helper.getDayNameofWeek(datelist)}</th>
-                    </c:forEach>
+                    </th>
+                    <c:forEach items="${requestScope.datelist}" var="datelist">
+                        <th align="center"> ${datelist} <br/>${helper.getDayNameofWeek(datelist)}</th>
+                        </c:forEach>
 
-            </tr>
-
-        </thead>
-        <tbody>
-
-            <c:forEach items="${requestScope.slots}" var="s">
-                <tr >
-                    <td style="background-color: #A4C3A2;">Slot ${s.slot}<br/> ${s.time}</td>
-                        <c:forEach items="${requestScope.datelist}" var="datelist">
-                        <td align="center" >
-                            <c:set var="num" value="0">
-
-                            </c:set>
-                            <c:forEach items="${requestScope.sessions}" var="session">
-                                <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
-                                    <c:set var="num" value="1"/>
-
-                                    <a style='text-decoration: none '  href="/PRJ_Assignment/lecturer/attend?sessionid=${session.sessionid}">${session.group.getGid()}</a><br/>
-
-                                    at ${session.room.room} <br/>
-                                    <c:if test="${session.status eq true }">
-                                        <i style="color: green   ">(Attend)</i>
-                                    </c:if>
-                                    <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) == 1)}" >
-                                        <i style="color: red   ">(Absent)</i>
-                                    </c:if>
-                                    <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) == 0)}" >
-                                        <i style="color: blue   ">(Happening)</i>
-                                    </c:if>
-                                    <c:if test="${session.status eq null or (helper.compare(helper.dateToday(),datelist) eq -1)}">
-                                        <i style="color: yellow   ">(Not yet)</i>
-                                    </c:if>
-
-                                </c:if>
-                            </c:forEach>
-                            <c:if test="${num eq 0}">
-                                -
-                            </c:if>
-
-                        </td>
-
-
-                    </c:forEach>
                 </tr>
-            </c:forEach>
+
+            </thead>
+            <tbody>
+
+                <c:forEach items="${requestScope.slots}" var="s">
+                    <tr >
+                        <td style="background-color: #A4C3A2;">Slot ${s.slot}<br/> ${s.time}</td>
+                            <c:forEach items="${requestScope.datelist}" var="datelist">
+                            <td align="center" >
+                                <c:set var="num" value="0">
+
+                                </c:set>
+                                <c:forEach items="${requestScope.sessions}" var="session">
+                                    <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
+                                        <c:set var="num" value="1"/>
+                                         
+                                        <a style='text-decoration: none '  href="${pageContext.request.contextPath}/lecturer/attend?sessionid=${session.sessionid}">${session.group.getGid()}</a><br/>
+
+                                        at ${session.room.room} <br/>
+                                        <c:if test="${session.status eq true }">
+                                            <i style="color: green   ">(Attend)</i>
+                                        </c:if>
+                                        <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) == 1)}" >
+                                            <i style="color: red   ">(Absent)</i>
+                                        </c:if>
+                                        <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) == 0)}" >
+                                            <i style="color: blue   ">(Happening)</i>
+                                        </c:if>
+                                        <c:if test="${session.status eq null or (helper.compare(helper.dateToday(),datelist) eq -1)}">
+                                            <i style="color: yellow   ">(Not yet)</i>
+                                        </c:if>
+
+                                    </c:if>
+                                </c:forEach>
+                                <c:if test="${num eq 0}">
+                                    -
+                                </c:if>
+
+                            </td>
 
 
-        </tbody>
-    </table>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
 
+
+            </tbody>
+        </table>
+    </div>
 
 
 
