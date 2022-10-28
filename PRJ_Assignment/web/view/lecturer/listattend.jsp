@@ -97,7 +97,7 @@
             <tr>
                 <th></th>
                     <c:forEach items="${requestScope.sessions}" var="ses" varStatus="s">
-                    <th style="background-color: #009879" >Slot ${s.count}</th>
+                    <th style="background-color: #009879" >${ses.sessionid}</th>
                     </c:forEach>
                 <th style="background-color: #009879">Attendence Report</th>
             </tr>

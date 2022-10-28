@@ -4,6 +4,7 @@
  */
 package controller;
 
+import controller.auth.BaseRoleController;
 import dal.AttendenceDBContext;
 import dal.SessionDBContext;
 import dal.StudentDBContext;
@@ -23,67 +24,33 @@ import model.Student;
  *
  * @author admin
  */
-public class ListAttendController extends HttpServlet {
+public class ListAttendController extends BaseRoleController {
 
-    
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-       
-        Account account = (Account)request.getSession().getAttribute("account");
-        String gid = request.getParameter("gid");
-        
-        
+    protected void processRequest(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        String gid = req.getParameter("gid");
+
         AttendenceDBContext attendDB = new AttendenceDBContext();
         SessionDBContext sessionDB = new SessionDBContext();
         StudentDBContext studentDB = new StudentDBContext();
         ArrayList<Attendence> attends = attendDB.getListAttend(gid);
         ArrayList<Session> sessions = sessionDB.ListSlot(gid);
         ArrayList<Student> students = studentDB.listStudent(gid);
-       
-        request.setAttribute("gid", gid);
-        request.setAttribute("attends", attends);
-        request.setAttribute("sessions", sessions);
-        request.setAttribute("students", students);
-        request.getRequestDispatcher("../view/lecturer/listattend.jsp").forward(request, response);
+
+        req.setAttribute("gid", gid);
+        req.setAttribute("attends", attends);
+        req.setAttribute("sessions", sessions);
+        req.setAttribute("students", students);
+        req.getRequestDispatcher("../view/lecturer/listattend.jsp").forward(req, resp);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void processPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        processRequest(req, resp, account);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void processGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        processRequest(req, resp, account);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

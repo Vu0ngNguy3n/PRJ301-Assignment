@@ -66,7 +66,8 @@ public class AttendenceDBContext extends DBContext<Attendence> {
                     + "INNER JOIN [Session] as ses ON att.sessionid = ses.sessionid\n"
                     + "INNER JOIN Student as stu ON att.sid = stu.sid\n"
                     + "INNER JOIN [Group] as g ON g.gid = ses.gid\n"
-                    + "WHERE g.gid = ? ";
+                    + "WHERE g.gid = ? "
+                    + "ORDER BY ses.sessionid";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, groupid);
             ResultSet rs = stm.executeQuery();

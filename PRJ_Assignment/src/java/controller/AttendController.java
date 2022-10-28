@@ -4,6 +4,7 @@
  */
 package controller;
 
+import controller.auth.BaseRoleController;
 import dal.AttendenceDBContext;
 import dal.SessionDBContext;
 import jakarta.servlet.ServletException;
@@ -21,44 +22,27 @@ import model.Attendence;
  *
  * @author admin
  */
-public class AttendController extends HttpServlet {
+public class AttendController extends BaseRoleController {
 
     
    
 
    
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String sessionid = request.getParameter("sessionid");
-        AttendenceDBContext attendDB = new AttendenceDBContext();
-        ArrayList<Attendence> attendlist = attendDB.getlistStudent(sessionid);
-        Account account = (Account)request.getSession().getAttribute("account");
-        String lecturerid = account.getLecturerid();
-        SessionDBContext sesDB = new SessionDBContext();
-        String gid = sesDB.getGid(lecturerid);
-        request.setAttribute("gid", gid);
+    
 
-        request.setAttribute("attend", attendlist);
-        request.setAttribute("sessionid", sessionid);
-        request.getRequestDispatcher("../view/lecturer/attend.jsp").forward(request, response);
-    }
-
-   
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Account account = (Account)request.getSession().getAttribute("account");
-        String sessionid = request.getParameter("sessionid");
+    protected void processPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+         
+        String sessionid = req.getParameter("sessionid");
         
-        String gid = request.getParameter("gid");
+        String gid = req.getParameter("gid");
         AttendenceDBContext attendDB = new AttendenceDBContext();
         SessionDBContext sessionDB = new SessionDBContext();
         int number = attendDB.getnum(sessionid);
         for(int i=1; i<= number; i++){
             Attendence a = new Attendence();
-            a.setAttend(request.getParameter("attend"+i));
-            boolean status = Boolean.parseBoolean(request.getParameter("status"+i));
+            a.setAttend(req.getParameter("attend"+i));
+            boolean status = Boolean.parseBoolean(req.getParameter("status"+i));
             if(status != true){
                 status= false;
             }
@@ -69,10 +53,26 @@ public class AttendController extends HttpServlet {
         sessionDB.updateSes(sessionid);
         ArrayList<Attendence> attendlist = attendDB.getlistStudent(sessionid);
         
-        request.setAttribute("attend", attendlist);
-        request.setAttribute("gid", gid);
-        request.setAttribute("sessionid", sessionid);
-        request.getRequestDispatcher("../view/lecturer/attend.jsp").forward(request, response);
+        req.setAttribute("attend", attendlist);
+        req.setAttribute("gid", gid);
+        req.setAttribute("sessionid", sessionid);
+        req.getRequestDispatcher("../view/lecturer/attend.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void processGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+         String sessionid = req.getParameter("sessionid");
+        AttendenceDBContext attendDB = new AttendenceDBContext();
+        ArrayList<Attendence> attendlist = attendDB.getlistStudent(sessionid);
+        
+        String lecturerid = account.getLecturerid();
+        SessionDBContext sesDB = new SessionDBContext();
+        String gid = sesDB.getGid(lecturerid);
+        req.setAttribute("gid", gid);
+
+        req.setAttribute("attend", attendlist);
+        req.setAttribute("sessionid", sessionid);
+        req.getRequestDispatcher("../view/lecturer/attend.jsp").forward(req, resp);
     }
    
 }
