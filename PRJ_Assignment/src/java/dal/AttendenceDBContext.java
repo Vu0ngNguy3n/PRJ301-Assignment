@@ -59,35 +59,36 @@ public class AttendenceDBContext extends DBContext<Attendence> {
     public ArrayList<Attendence> getListAttend(String groupid) {
         ArrayList<Attendence> attendeces = new ArrayList<>();
         try {
-            String sql = "SELECT att.attend,ses.sessionid \n"
-                    + "	,stu.sid,stu.sname\n"
-                    + "	,att.status,att.timerecord\n"
-                    + "FROM Attendence as att\n"
-                    + "INNER JOIN [Session] as ses ON att.sessionid = ses.sessionid\n"
-                    + "INNER JOIN Student as stu ON att.sid = stu.sid\n"
-                    + "INNER JOIN [Group] as g ON g.gid = ses.gid\n"
-                    + "WHERE g.gid = ? "
-                    + "ORDER BY ses.sessionid";
+            String sql = "Select att.attend,ses.sessionid,ses.date\n"
+                    + "                    ,stu.sid,stu.sname\n"
+                    + "                    ,att.status,att.timerecord\n"
+                    + "                    FROM Attendence as att\n"
+                    + "                    INNER JOIN [Session] as ses ON att.sessionid = ses.sessionid\n"
+                    + "                    INNER JOIN Student as stu ON att.sid = stu.sid\n"
+                    + "                    INNER JOIN [Group] as g ON g.gid = ses.gid\n"
+                    + "                    WHERE g.gid = ? \n"
+                    + "                   ORDER BY ses.date ";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, groupid);
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Attendence a = new Attendence();
                 a.setAttend(rs.getString("attend"));
                 a.setStatus(rs.getBoolean("status"));
                 a.setTimerecord(rs.getTimestamp("timerecord"));
-                
+
                 Student stu = new Student();
                 Session ses = new Session();
-                
+
                 stu.setSid(rs.getString("sid"));
                 stu.setSname(rs.getString("sname"));
                 a.setStudent(stu);
-                
+
                 ses.setSessionid(rs.getString("sessionid"));
+                ses.setDate(rs.getDate("date"));
                 a.setSession(ses);
                 attendeces.add(a);
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(AttendenceDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,9 +96,13 @@ public class AttendenceDBContext extends DBContext<Attendence> {
         return attendeces;
 
     }
-    
-    
-   
+    public static void main(String[] args) {
+        AttendenceDBContext db = new AttendenceDBContext();
+        ArrayList<Attendence> a = db.getListAttend("SE1601-PRJ301");
+        for (Attendence attendence : a) {
+            System.out.println(attendence.getSession().getSessionid());
+        }
+    }
 
     public int getnum(String sessionid) {
         int number = 0;

@@ -22,7 +22,7 @@ public class AccountDBContext extends DBContext<Account> {
 
     public Account getAccount(String username, String password) {
         try {
-            String sql = "SELECT acc.username,acc.displayname,acc.lecturerid\n"
+            String sql = "SELECT acc.username,acc.displayname,acc.id\n"
                     + ",r.rid,r.rname\n"
                     + ",f.fid,f.fname,f.url\n"
                     + "FROM Account as acc \n"
@@ -43,7 +43,7 @@ public class AccountDBContext extends DBContext<Account> {
                     account = new Account();
                     account.setUsername(rs.getString("username"));
                     account.setDisplayname(rs.getString("displayname"));
-                    account.setLecturerid(rs.getString("lecturerid"));
+                    account.setId(rs.getString("id"));
                 }
                 int rid = rs.getInt("rid");
                 if (rid != 0) {

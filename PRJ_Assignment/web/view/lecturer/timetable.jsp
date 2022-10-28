@@ -102,7 +102,7 @@
             <thead >
                 <tr>
                     <th >
-                        <form action="${pageContext.request.contextPath}/lecturer/timetable?lecturerid=${sessionScope.account.lecturerid}&from=${param.from}&to=${param.to}" method="GET">
+                        <form action="${pageContext.request.contextPath}/lecturer/timetable?lecturerid=${sessionScope.account.id}&from=${param.from}&to=${param.to}" method="GET">
 
                             <input type="hidden" name="lecturerid" value="${sessionScope.account.displayname}">
 

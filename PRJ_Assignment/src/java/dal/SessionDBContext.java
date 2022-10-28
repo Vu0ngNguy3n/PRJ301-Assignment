@@ -26,8 +26,7 @@ import model.TimeSlot;
  */
 public class SessionDBContext extends DBContext<Session> {
 
-    
-    public void updateSes(String sessionid){
+    public void updateSes(String sessionid) {
         try {
             String sql = "UPDATE [Session] SET attend = 'true'\n"
                     + "WHERE sessionid =?";
@@ -38,7 +37,7 @@ public class SessionDBContext extends DBContext<Session> {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public ArrayList<Session> listSession(String lecturerid, Date from, Date to) {
         ArrayList<Session> listSession = new ArrayList<>();
         try {
@@ -104,9 +103,10 @@ public class SessionDBContext extends DBContext<Session> {
     public ArrayList<Session> ListSlot(String gid) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "SELECT sessionid,gid,date,room,slot,attend \n"
-                    + "FROM [Session] \n"
-                    + "WHERE  gid = ?";
+            String sql = "SELECT sessionid,gid,date,room,slot,attend\n"
+                    + "FROM [Session]\n"
+                    + "WHERE gid= ?\n"
+                    + "order by date";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, gid);
             ResultSet rs = stm.executeQuery();
@@ -135,6 +135,8 @@ public class SessionDBContext extends DBContext<Session> {
         }
         return sessions;
     }
+
+ 
 
     public String getGid(String lecturerid) {
         try {

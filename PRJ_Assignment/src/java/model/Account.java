@@ -14,27 +14,28 @@ public class Account {
     private String username;
     private String password;
     private String displayname;
-    private String lecturerid;
+    private String id;
     private ArrayList<Role> roles = new ArrayList<>();
 
     public Account() {
     }
 
-    public Account(String username, String password, String displayname, String lecturerid) {
+    public Account(String username, String password, String displayname, String id) {
         this.username = username;
         this.password = password;
         this.displayname = displayname;
-        this.lecturerid = lecturerid;
+        this.id = id;
     }
 
-    public String getLecturerid() {
-        return lecturerid;
+    public String getId() {
+        return id;
     }
 
-    public void setLecturerid(String lecturerid) {
-        this.lecturerid = lecturerid;
+    public void setId(String id) {
+        this.id = id;
     }
 
+  
     
 
     public String getUsername() {

@@ -68,13 +68,13 @@
                             <a class="nav-link" href="#">Hello Mr.${sessionScope.account.displayname}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="timetable?lecturerid=${sessionScope.account.lecturerid}">
+                            <a class="nav-link " aria-current="page" href="timetable?lecturerid=${sessionScope.account.id}">
                                 TimeTable
                                <i class="fa-sharp fa-solid fa-table"></i>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="/PRJ_Assignment/lecturer/listattend?gid=${requestScope.gid}&lecturerid=${sessionScope.account.lecturerid}">
+                            <a class="nav-link " aria-current="page" href="/PRJ_Assignment/lecturer/listattend?gid=${requestScope.gid}&lecturerid=${sessionScope.account.id}">
                                 Attend Of This Class
                                 <i class="fa-solid fa-list-check"></i>
                             </a>
@@ -91,7 +91,7 @@
                 </div>
             </div>
         </nav>
-        <a href="timetable?lecturerid=${sessionScope.account.lecturerid}">Home</a>
+        <a href="timetable?lecturerid=${sessionScope.account.id}">Home</a>
         <input style="display: block" type="text" name="gid" value="${requestScope.gid}">
         <table class="content-table">
             <tr>

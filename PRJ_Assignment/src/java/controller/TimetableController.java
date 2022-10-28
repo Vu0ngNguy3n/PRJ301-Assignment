@@ -31,7 +31,7 @@ public class TimetableController extends BaseRoleController {
 
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
 
-        String lecturerid = account.getLecturerid();
+        String lecturerid = account.getId();
         String from_e = req.getParameter("from");
         String to_e = req.getParameter("to");
         java.sql.Date from = null;

@@ -69,13 +69,13 @@
                             <a class="nav-link" href="#">Hello Mr.${sessionScope.account.displayname}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="timetable?lecturerid=${sessionScope.account.lecturerid}">
+                            <a class="nav-link " aria-current="page" href="timetable?lecturerid=${sessionScope.account.id}">
                                 TimeTable
                                 <i class="fa-sharp fa-solid fa-table"></i>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="${pageContext.request.contextPath}/lecturer/listattend?gid=${requestScope.gid}&lecturerid=${sessionScope.account.lecturerid}">
+                            <a class="nav-link " aria-current="page" href="${pageContext.request.contextPath}/lecturer/listattend?gid=${requestScope.gid}&lecturerid=${sessionScope.account.id}">
                                 Attend Of This Class
                                <i class="fa-solid fa-list-check"></i>
                             </a>

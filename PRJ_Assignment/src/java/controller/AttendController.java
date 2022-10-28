@@ -65,7 +65,7 @@ public class AttendController extends BaseRoleController {
         AttendenceDBContext attendDB = new AttendenceDBContext();
         ArrayList<Attendence> attendlist = attendDB.getlistStudent(sessionid);
         
-        String lecturerid = account.getLecturerid();
+        String lecturerid = account.getId();
         SessionDBContext sesDB = new SessionDBContext();
         String gid = sesDB.getGid(lecturerid);
         req.setAttribute("gid", gid);
