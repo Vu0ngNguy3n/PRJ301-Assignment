@@ -6,6 +6,9 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="helper" class="helper.DateTimeHelper"/>
+<jsp:useBean id="subject" class="dal.SubjectDBContext"/> 
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -51,13 +54,53 @@
             .content-table tbody tr:last-of-type{
                 border-bottom: 2px solid #009879;
             }
+            .navbar-nav .nav-item{
+                padding: 5px 5px;
+            }
+             .navbar-nav .nav-item{
+                padding: 5px 5px;
+            }
+            .dropdown-menu{
+                display: none;
+                position: relative;
+                background-color: #212529;
+            }
+            .dropdown-menu li a{
+                top: 100%;
+                line-height: 24px;
+                padding: 0px 24px;
+                color: #fff;
+                text-decoration: none;
+                text-transform: uppercase;
+                display: inline-block;
+            }
+            .nav-item .nav-link{
+                display: inline-block;
+                position: relative;
+            }
+            .nav-item .dropdown-menu{
+                position: absolute;
+                background-color: #212529;
+                display: block;
+                display: none;
+                list-style-type: none;
+            }
+            .navbar-nav >.nav-item:hover >a,
+            .navbar-nav .dropdown-menu li:hover{
+                background-color: #000;
+
+            }
+            .navbar-nav li:hover .dropdown-menu{
+                display: block;
+                padding: 2px 0px;
+            }
         </style>
 
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" >
             <div class="container" >
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="${pageContext.request.contextPath}/lecturer/timetable">
                     <img src="${pageContext.request.contextPath}/view/lecturer/logo.jpg" alt="logo" height="44">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,11 +117,14 @@
                                 <i class="fa-sharp fa-solid fa-table"></i>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="${pageContext.request.contextPath}/lecturer/listattend?gid=${requestScope.gid}&lecturerid=${sessionScope.account.id}">
-                                Attend Of This Class
-                               <i class="fa-solid fa-list-check"></i>
-                            </a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link active" aria-current="page"  href="#">List Attend <i class="fa-solid fa-caret-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <c:forEach items="${requestScope.subjects}" var="s">
+                                    <li><a href="${pageContext.request.contextPath}/lecturer/listattend?gid=${subject.getgid(s.subjectid)}">${s.subjectid}</a></li>
+                                    </c:forEach>
+                            </ul>
+
                         </li>
 
                         <li class="nav-item dropdown">
@@ -116,16 +162,31 @@
                     <td>${attend.student.sname}</td>
                     <td>${attend.session.group.gid}</td>
                     <td>
-                        <input
-                            <c:if test="${attend.status}">
-                                checked="checked"
+                        
+                        <c:if test="${helper.compare(requestScope.date,helper.dateToday()) == 0}">
+                            <input
+                                <c:if test="${attend.status}">
+                                    checked="checked"
+                                </c:if>
+                                type="radio" name="status${a.count}" value="true" > Attend
+                            <input
+                                <c:if test="${!attend.status or(attend.status eq null)}">
+                                    checked="checked"
+                                </c:if>
+                                type="radio" name="status${a.count}" value="false" > Absent
+                        </c:if>
+                        <c:if test="${helper.compare(requestScope.date,helper.dateToday()) < 0}">
+                            <c:if test="${attend.status eq true}">
+                                <i style="color: green">Attended</i>
                             </c:if>
-                            type="radio" name="status${a.count}" value="true" > Attend
-                        <input
-                            <c:if test="${!attend.status or(attend.status eq null)}">
-                                checked="checked"
+                            <c:if test="${attend.status eq false}">
+                                <i style="color: red">Absent</i>
                             </c:if>
-                            type="radio" name="status${a.count}" value="false" > Absent
+                        </c:if>    
+                        <c:if test="${helper.compare(requestScope.date,helper.dateToday()) > 0}">
+                            <i style="color: black">Not Yet</i>
+                        </c:if>        
+
                     </td>
                     <td>${attend.timerecord}</td>
                     </tr>
@@ -134,7 +195,14 @@
 
             </table>
 
-            <input type="submit" value="Submit">
+            
+                <input 
+                    <c:if test="${helper.compare(requestScope.date,helper.dateToday()) != 0}">
+                        type="hidden"
+                   </c:if>
+                    type="submit" 
+                    value="Submit">
+          
         </form>
     </body>
 </html>

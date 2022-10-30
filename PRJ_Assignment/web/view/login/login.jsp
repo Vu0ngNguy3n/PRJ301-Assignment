@@ -32,7 +32,10 @@
                 <div class="alert alert-success">
                     <strong>Success!</strong> Logout successfully!
                 </div>
+
             </c:if>
+           
+
             <div class="login-card">
                 <div class="login-card-logo">
                     <img src="view/login/logo.jpg" alt="logo">
@@ -51,7 +54,7 @@
                         <input type="password" placeholder="Enter Password" required name="password" >
                     </div>
                     <div class="form-item-other">
-                        
+
                     </div>
                     <button type="submit">Sign In</button>
                 </form>

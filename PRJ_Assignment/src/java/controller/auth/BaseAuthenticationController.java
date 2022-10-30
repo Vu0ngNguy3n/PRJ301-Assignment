@@ -27,7 +27,7 @@ public abstract class BaseAuthenticationController extends HttpServlet{
         if(isAuthentcated(req)){
             processPost(req, resp);
         }else{
-            resp.getWriter().print("access denied");
+           resp.sendRedirect("/PRJ_Assignment/login");
         }
     }
 
@@ -39,7 +39,7 @@ public abstract class BaseAuthenticationController extends HttpServlet{
         if(isAuthentcated(req)){
             processGet(req, resp);
         }else{
-            resp.getWriter().print("access denied");
+            resp.sendRedirect("/PRJ_Assignment/login");
         }
     }
     

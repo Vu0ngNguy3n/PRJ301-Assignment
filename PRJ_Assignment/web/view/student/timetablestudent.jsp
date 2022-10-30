@@ -1,6 +1,6 @@
 <%-- 
-    Document   : attend
-    Created on : Oct 14, 2022, 9:34:43 PM
+    Document   : timetablestudent
+    Created on : Oct 29, 2022, 1:42:29 AM
     Author     : admin
 --%>
 
@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>FAP TimeTable</title>
+        <title>TimeTable Student FAP</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
@@ -55,9 +55,6 @@
             .navbar-nav .nav-item{
                 padding: 5px 5px;
             }
-             .navbar-nav .nav-item{
-                padding: 5px 5px;
-            }
             .dropdown-menu{
                 display: none;
                 position: relative;
@@ -93,18 +90,12 @@
                 padding: 2px 0px;
             }
         </style>
-        <script >
-            function notification() {
-                alert("You don't have enough permission to change attendence of this slot");
-            }
-
-        </script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" >
             <div class="container" >
-                <a class="navbar-brand" href="${pageContext.request.contextPath}/lecturer/timetable">
-                    <img src="${pageContext.request.contextPath}/view/lecturer/logo.jpg" alt="logo" height="36">
+                <a class="navbar-brand" href="${pageContext.request.contextPath}/student/timetable?lecturerid=${sessionScope.account.id}">
+                    <img src="${pageContext.request.contextPath}/view/student/logo.jpg" alt="logo" height="36">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -113,21 +104,21 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="#">
-                                Hello Mr.${sessionScope.account.displayname}
+                                Hello ${sessionScope.account.displayname}
                                 <i class="fa-solid fa-chalkboard-user"></i>
                             </a>
                         </li>
-
                         <li class="nav-item dropdown">
                             <a class="nav-link active" aria-current="page"  href="#">List Attend <i class="fa-solid fa-caret-down"></i></a>
                             <ul class="dropdown-menu">
                                 <c:forEach items="${requestScope.subjects}" var="s">
-                                    <li><a href="${pageContext.request.contextPath}/lecturer/listattend?gid=${subject.getgid(s.subjectid)}">${s.subjectid}</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/student/listattend?gid=${subject.getgid(s.subjectid)}">${s.subjectid}</a></li>
                                     </c:forEach>
                             </ul>
 
                         </li>
-                        <li class="nav-item dropdown">
+
+                        <li class="nav-item ">
                             <a class="nav-link " href="${pageContext.request.contextPath}/logout" id="navbarDropdown" >
                                 Logout
                                 <i class="fa-solid fa-right-from-bracket"></i>
@@ -138,17 +129,13 @@
                 </div>
             </div>
         </nav>
-
-
-        <br><br>
+        <br/><div style="display: flex; justify-content: center;" ><h2>Activities for ${sessionScope.account.id} (${sessionScope.account.displayname})</h2></div><br/>
         <div style="display: flex; justify-content: center;"><table class="content-table">
+
                 <thead >
                     <tr>
                         <th >
-                            <form action="${pageContext.request.contextPath}/lecturer/timetable?lecturerid=${sessionScope.account.id}&from=${param.from}&to=${param.to}" method="GET">
-
-                                <input type="hidden" name="lecturerid" value="${sessionScope.account.displayname}">
-
+                            <form action="${pageContext.request.contextPath}/student/timetable?sid=${sessionScope.account.id}&from=${param.from}&to=${param.to}" method="GET">
                                 Date From: <input type="date" name="from" value="${requestScope.from}"><br/>
                                 Date To: <input type="date" name="to" value="${requestScope.to}"}>
                                 <button type="submit" ><i class="fa-solid fa-eye"></i></button>
@@ -157,15 +144,14 @@
 
                         </th>
                         <c:forEach items="${requestScope.datelist}" var="datelist">
-                            <th align="center"> ${datelist} <br/>${helper.getDayNameofWeek(datelist)}</th>
+                            <th>${datelist}<br/> ${helper.getDayNameofWeek(datelist)}</th> 
                             </c:forEach>
 
                     </tr>
 
                 </thead>
                 <tbody>
-
-                    <c:forEach items="${requestScope.slots}" var="s">
+                    <c:forEach items="${requestScope.timeslots}" var="s">
                         <tr >
                             <td style="background-color: #A4C3A2;">Slot ${s.slot}<br/> ${s.time}</td>
                                 <c:forEach items="${requestScope.datelist}" var="datelist">
@@ -177,8 +163,7 @@
                                         <c:if test="${helper.compare(datelist,session.date) eq 0 and (session.slot.slot eq s.slot)}">
                                             <c:set var="num" value="1"/>
 
-                                            <a style='text-decoration: none '  href="${pageContext.request.contextPath}/lecturer/attend?sessionid=${session.sessionid}&date=${datelist}">${session.group.getGid()}</a><br/>
-
+                                            <a style='text-decoration: none '  href="#">${session.group.gid}</a><br/>
 
                                             at ${session.room.room} <br/>
                                             <c:if test="${session.status eq true }">
@@ -187,10 +172,8 @@
                                             <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) == 1)}" >
                                                 <i style="color: red   ">(Absent)</i>
                                             </c:if>
-                                            <c:if test="${session.status eq false and (helper.compare(helper.dateToday(),datelist) == 0)}" >
-                                                <i style="color: blue   ">(Happening)</i>
-                                            </c:if>
-                                            <c:if test="${session.status eq null or (helper.compare(helper.dateToday(),datelist) eq -1)}">
+
+                                            <c:if test="${session.status eq null or (helper.compare(helper.dateToday(),datelist) <= 0)}">
                                                 <i style="color: yellow   ">(Not yet)</i>
                                             </c:if>
 
@@ -208,14 +191,19 @@
                     </c:forEach>
 
 
+
                 </tbody>
             </table>
         </div>
+        <div style="margin-left: 25%">
+            <b>More note:</b><br/> 
+            <ul>
+                <li>(<font color="green">Attended</font>)<i> ${sessionScope.account.id} (${sessionScope.account.displayname}) had attended this slot</i></li>
+                <li>(<font color="red">Absent</font>)<i> ${sessionScope.account.id} (${sessionScope.account.displayname}) had not attended this slot</li>
+                <li>(<font color="yellow">Not yet</font>)<i> ${sessionScope.account.id} (${sessionScope.account.displayname}) will learn this slot in the future</li>
+            </ul>
 
-
-
-
-
+        </div>                    
 
     </body>
 </html>

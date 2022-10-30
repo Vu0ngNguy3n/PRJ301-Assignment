@@ -1,12 +1,13 @@
 <%-- 
-    Document   : listattend
-    Created on : Oct 21, 2022, 8:00:09 PM
+    Document   : listattendstudent
+    Created on : Oct 30, 2022, 4:48:00 PM
     Author     : admin
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="subject" class="dal.SubjectDBContext"/> 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,10 +16,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
-        <title>Attend of class ${requestScope.gid}</title>
+        <title>View Attendence</title>
         <style>
             .content-table{
-               
+                width: 50%;
                 margin-left: auto;
                 margin-right: auto;
                 border-collapse: collapse;
@@ -51,10 +52,10 @@
             .content-table tbody tr:last-of-type{
                 border-bottom: 2px solid #009879;
             }
-            .navbar-nav .nav-item{
-                padding: 5px 5px;
+            body{
+                background: #ededed;
             }
-             .navbar-nav .nav-item{
+            .navbar-nav .nav-item{
                 padding: 5px 5px;
             }
             .dropdown-menu{
@@ -94,10 +95,9 @@
         </style>
     </head>
     <body>
-        
-         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" >
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" >
             <div class="container" >
-                <a class="navbar-brand" href="${pageContext.request.contextPath}/lecturer/timetable">
+                <a class="navbar-brand" href="${pageContext.request.contextPath}/student/timetable">
                     <img src="${pageContext.request.contextPath}/view/lecturer/logo.jpg" alt="logo" height="44">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,26 +106,29 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Hello Mr.${sessionScope.account.displayname}</a>
+                            <a class="nav-link" href="#">
+                                Hello ${sessionScope.account.displayname}
+                                <i class="fa-solid fa-chalkboard-user"></i>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="timetable">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/student/timetable">
                                 TimeTable
-                               <i class="fa-sharp fa-solid fa-table"></i>
+                                <i class="fa-sharp fa-solid fa-table"></i>
                             </a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link active" aria-current="page"  href="#">List Attend <i class="fa-solid fa-caret-down"></i></a>
                             <ul class="dropdown-menu">
                                 <c:forEach items="${requestScope.subjects}" var="s">
-                                    <li><a href="${pageContext.request.contextPath}/lecturer/listattend?gid=${subject.getgid(s.subjectid)}">${s.subjectid}</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/student/listattend?gid=${subject.getgid(s.subjectid)}">${s.subjectid}</a></li>
                                     </c:forEach>
                             </ul>
 
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link " href="/PRJ_Assignment/logout" id="navbarDropdown" >
+                        <li class="nav-item ">
+                            <a class="nav-link " href="${pageContext.request.contextPath}/logout" id="navbarDropdown" >
                                 Logout
                                 <i class="fa-solid fa-right-from-bracket"></i>
                             </a>
@@ -135,58 +138,76 @@
                 </div>
             </div>
         </nav>
-        
-        <table class="content-table">
-            <tr>
-                <th></th>
-                    <c:forEach items="${requestScope.sessions}" var="ses" varStatus="s">
-                    <th style="background-color: #009879" >Slot ${s.count}</th>
-                    </c:forEach>
-                <th style="background-color: #009879">Attendence Report</th>
-            </tr>
 
-            <c:forEach items="${requestScope.students}" var="students">
-                <tr>
-                    <c:set var="attended" value="0"/>
-                    <c:set var="total" value="0"/>
-                    <td style="background-color: #A4C3A2;">${students.sid} - ${students.sname}</td>
-                    <c:forEach items="${requestScope.sessions}" var="ses" >
+        <div style="display: flex; justify-content: center">
 
-                        <c:forEach items="${requestScope.attends}" var="att">
-                            <c:if test="${att.student.sid eq students.sid and (att.session.sessionid eq ses.sessionid)}">
-                                <td>
-                                    <c:if test="${att.timerecord ne null}">
-                                        <c:set var="total" value="${total+1}"/>
 
-                                        <c:if test="${att.status eq true}">
-                                            <i style="color: green" class="fa-sharp fa-solid fa-check"></i>
-                                            <c:set var="attended" value="${attended+1}"/>
-                                        </c:if>
-                                        <c:if test="${att.status ne true}">
-                                            <i style="color: red" class="fa-solid fa-x"></i>
-                                        </c:if> 
-                                    </c:if>
-
-                                    <c:if test="${att.timerecord eq null}">
-                                        <i style="color: red" >Not yet</i>
-                                    </c:if>
-
-                                </td>
-                            </c:if>
-                        </c:forEach>
-                    </c:forEach>
-                    <td>
-                        ${attended}/${total} <br/>
-                        <c:if test="${attended/total <= 0.8}">
-                           <i style="color: red" class="fa-solid fa-face-tired"></i>
-                        </c:if>
-                        <c:if test="${attended/total >= 0.8}">
-                             <i style="color: green" class="fa-sharp fa-solid fa-face-smile"></i>
-                        </c:if>
-                    </td>       
-
+            <table class="content-table">
+                <tr style="background-color: #009879">
+                    <th>NO</th>
+                    <th>DATE</th>
+                    <th>SLOT</th>
+                    <th>ROOM</th>
+                    <th>LECTURER</th>
+                    <th>GROUP NAME</th>
+                    <th>STATUS</th>
                 </tr>
-            </c:forEach>
-        </table>
+
+                <c:forEach items="${requestScope.attends}" var="s" varStatus="n">
+                    <tr>
+                        <td> ${n.count} </td>
+                        <td >
+                            <span style="background-color:#009879;display: inline;
+                                  padding: 0.2em 0.6em 0.3em;
+                                  font-size: 75%;
+                                  font-weight: 700;
+                                  line-height: 1;
+                                  color: #fff;
+                                  text-align: center;
+                                  white-space: nowrap;
+                                  vertical-align: baseline;
+                                  border-radius: 0.25em; ">
+                                ${s.session.date}
+                            </span>
+                        </td>
+                        <td>
+                            <span style="background-color:red;display: inline;
+                                  padding: 0.2em 0.6em 0.3em;
+                                  font-size: 75%;
+                                  font-weight: 700;
+                                  line-height: 1;
+                                  color: #fff;
+                                  text-align: center;
+                                  white-space: nowrap;
+                                  vertical-align: baseline;
+                                  border-radius: 0.25em; ">
+                                ${s.session.slot.slot}
+                            </span>
+                        </td>
+                        <td>${s.session.room.room} <i class="fa-solid fa-building"></i></td>
+                        <td style="text-transform: uppercase">${s.session.lecturer.lecturerid}</td>
+                        <td>${s.session.group.gid}</td>
+                        <td>
+                            <c:if test="${s.status eq true }">
+                                <font color='green'>
+                                Present
+                                </font>
+                            </c:if>
+                            <c:if test="${s.status eq false and (s.timerecord ne null) }">
+                                <font color='red'>
+                                Absent
+                                </font>
+                            </c:if>
+                            <c:if test="${s.status eq false and (s.timerecord eq null) }">
+                                <font color='black'>
+                                Not yet
+                                </font>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+
     </body>
 </html>

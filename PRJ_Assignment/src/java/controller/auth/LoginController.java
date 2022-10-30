@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import model.Account;
+import model.Role;
 
 /**
  *
@@ -43,7 +44,12 @@ public class LoginController extends HttpServlet {
             response.sendRedirect("login?status=2");
         } else {
             request.getSession().setAttribute("account", account);
-            request.getSession().setMaxInactiveInterval(100);
+            request.getSession().setMaxInactiveInterval(400);
+            for (Role role : account.getRoles()) {
+                if(role.getRid() == 4){
+                    request.getRequestDispatcher("/student/timetable").forward(request, response);
+                }
+            }
             request.getRequestDispatcher("/lecturer/timetable").forward(request, response);
         }
     }
