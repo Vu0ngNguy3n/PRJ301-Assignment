@@ -185,17 +185,17 @@
                             </span>
                         </td>
                         <td>${s.session.room.room} <i class="fa-solid fa-building"></i></td>
-                        <td style="text-transform: uppercase">${s.session.lecturer.lecturerid}</td>
-                        <td>${s.session.group.gid}</td>
+                        <td style="text-transform: uppercase">${s.session.lecturer.lecturerid} <i class="fa-sharp fa-solid fa-chalkboard-user"></i></td>
+                        <td>${s.session.group.gid} <i class="fa-solid fa-campground"></i></td>
                         <td>
                             <c:if test="${s.status eq true }">
                                 <font color='green'>
-                                Present
+                                Present <i class="fa-sharp fa-solid fa-check"></i>
                                 </font>
                             </c:if>
                             <c:if test="${s.status eq false and (s.timerecord ne null) }">
                                 <font color='red'>
-                                Absent
+                                Absent <i class="fa-solid fa-x"></i>
                                 </font>
                             </c:if>
                             <c:if test="${s.status eq false and (s.timerecord eq null) }">

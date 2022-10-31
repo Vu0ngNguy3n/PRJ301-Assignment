@@ -36,7 +36,13 @@ public abstract class BaseRoleController extends BaseAuthenticationController{
         if(isAuthorized(req)){
             processPost(req, resp, (Account)req.getSession().getAttribute("account"));
         }else{
-              resp.sendRedirect("/PRJ_Assignment/login");
+            Account account = (Account)req.getSession().getAttribute("account");
+            if(account.getId().startsWith("HE")){
+                req.getRequestDispatcher("/student/timetable").forward(req, resp);
+            }else{
+                req.getRequestDispatcher("/lecturer/timetable").forward(req, resp);
+            }
+            
         }
     }
     
@@ -48,7 +54,12 @@ public abstract class BaseRoleController extends BaseAuthenticationController{
         if(isAuthorized(req)){
             processGet(req, resp, (Account)req.getSession().getAttribute("account"));
         }else{
-              resp.sendRedirect("/PRJ_Assignment/login");
+              Account account = (Account)req.getSession().getAttribute("account");
+            if(account.getId().startsWith("HE")){
+                req.getRequestDispatcher("/student/timetable").forward(req, resp);
+            }else{
+                req.getRequestDispatcher("/lecturer/timetable").forward(req, resp);
+            }
         }
     }
     
