@@ -7,6 +7,7 @@ package controller.auth;
 import dal.AccountDBContext;
 import dal.LecturerDBContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +30,17 @@ public class LoginController extends HttpServlet {
         if (request.getParameter("status") != null) {
             status = Integer.parseInt(request.getParameter("status"));
         }
+        
+        Cookie arr[] = request.getCookies();
+        for (Cookie cookie : arr) {
+            if(cookie.getName().equals("userC")){
+                request.setAttribute("username", cookie.getValue());
+            }
+            if (cookie.getName().equals("passC")) {
+                request.setAttribute("password", cookie.getValue());
+            }
+        }
+        
         request.setAttribute("status", status);
         request.getRequestDispatcher("/view/login/login.jsp").forward(request, response);
     }
@@ -44,7 +56,20 @@ public class LoginController extends HttpServlet {
             response.sendRedirect("login?status=2");
         } else {
             request.getSession().setAttribute("account", account);
-            request.getSession().setMaxInactiveInterval(400);
+            request.getSession().setMaxInactiveInterval(200);
+            
+            Cookie u = new Cookie("userC", username);
+            Cookie p = new Cookie("passC", password);
+            if (request.getParameter("remember") != null) {
+                 p.setMaxAge(200);
+            }else{
+                 p.setMaxAge(0);
+            }
+            u.setMaxAge(200);
+           
+            response.addCookie(p);
+            response.addCookie(u);
+            
             for (Role role : account.getRoles()) {
                 if(role.getRid() == 4){
                     request.getRequestDispatcher("/student/timetable").forward(request, response);

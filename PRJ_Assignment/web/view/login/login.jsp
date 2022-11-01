@@ -34,7 +34,7 @@
                 </div>
 
             </c:if>
-           
+
 
             <div class="login-card">
                 <div class="login-card-logo">
@@ -47,17 +47,21 @@
                 <form  class="login-card-form" action="login" method="POST">
                     <div class="form-item">
                         <span class="form-item-icon material-symbols-rounded">mail</span>
-                        <input type="text" placeholder="Enter Email" required autofocus name="username" >
+                        <input type="text" value="${requestScope.username}" placeholder="Enter Email" required autofocus name="username" >
                     </div>
                     <div class="form-item">
                         <span class="form-item-icon material-symbols-rounded">lock</span>
-                        <input type="password" placeholder="Enter Password" required name="password" >
+                        <input type="password" value="${requestScope.password}" placeholder="Enter Password" required name="password" >
                     </div>
                     <div class="form-item-other">
+                        <div class="checkbox">
+                            <input type="checkbox" id="rememberMeCheckbox" name="remember">
+                            <label for="rememberMeCheckBox">Remember me</label>
+                        </div>
+                     </div>
 
-                    </div>
-                    <button type="submit">Sign In</button>
-                </form>
+                        <button type="submit">Sign In</button>
+                        </form>
                 <div class="login-card-footer">
                     Don't have an account? <a href="#">Create a free account</a>
                 </div>
