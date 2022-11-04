@@ -19,7 +19,7 @@ import model.Role;
  * @author admin
  */
 public class AccountDBContext extends DBContext<Account> {
-
+    
     public Account getAccount(String username, String password) {
         try {
             String sql = "SELECT acc.username,acc.displayname,acc.id\n"
